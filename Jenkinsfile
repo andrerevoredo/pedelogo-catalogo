@@ -11,7 +11,7 @@ pipeline {
         stage('Build Image'){
             steps {
                 script {
-                    dockerapp = docker.build("revoredo/api-produto:${env.BUILD.ID}",
+                    dockerapp = docker.build("revoredo/api-produto:${env.BUILD_ID}",
                       '-f ./src/PedeLogo.Catalogo.Api/Dockerfile .')
                 } 
             }
