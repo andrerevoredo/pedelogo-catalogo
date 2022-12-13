@@ -1,10 +1,29 @@
 pipeline {
-    agent any
+    agent any // agente(usuario) que vai executar a pipeline
 
     stages {
-        stage('Teste'){
+        stage('Checkout Source'){
             steps {
-                echo 'Teste'
+                git url:'https://github.com/andrerevoredo/pedelogo-catalogo.git', branch:'main' 
+            }
+        }
+
+        stage('Build Image'){
+            steps {
+                script {
+                    dockerapp = docker.build("revoredo/api-produto:${env.BUILD.ID}",
+                      '-f ./src/PedeLogo.Catalogo.Api/Dockerfile .')
+                } 
+            }
+        }
+        
+        stage('Push Image'){
+            steps {
+                script{
+                    docker.withRegistry('https://registry.hub.docker,com', 'dockerhub'){
+                    dockerapp.push('latest')
+                    dockerapp.push("${env.BUILD_ID}")    
+                }
             }
         }
     }
