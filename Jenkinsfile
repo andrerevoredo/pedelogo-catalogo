@@ -27,5 +27,23 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy Kubernetes'){
+            agent{
+                kubernetes{
+                    cloud 'kubernetes'
+                }
+            }
+            environment{
+                tag_version = "${env.BUILD_ID}"
+            }
+            steps{
+                script{
+                    sh 'sed -i "s/{{tag}}/$tag_version/g" ./api-produto/templates/api-deployment.yaml'
+                    sh 'cat ./api-produto/templates/api-deployment.yaml'
+                    kubernetesDeploy(configs: '**/api-produto/**', kubeconfigId: 'kubeconfig')
+                }
+            }
+        }
     }
 }
