@@ -41,7 +41,7 @@ pipeline {
                 script{
                     sh 'sed -i "s/{{tag}}/$tag_version/g" ./api-produto/templates/api-deployment.yaml'
                     sh 'cat ./api-produto/templates/api-deployment.yaml'
-                    kubernetesDeploy(configs: '**/api-produto/**', kubeconfigId: 'kubeconfig')
+                    kubernetesDeploy(configs: '**/api-produto/**', kubeconfigId: 'kube')
                 }
             }
         }
