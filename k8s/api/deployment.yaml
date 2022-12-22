@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: revoredo/api-produto:10
+        image: revoredo/api-produto:{{tag}}
         resources:
           requests:
             memory: 32Mi
