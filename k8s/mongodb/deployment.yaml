@@ -8,6 +8,10 @@ spec:
       app: mongodb
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "9216"
       labels:
         app: mongodb
     spec:
@@ -28,4 +32,13 @@ spec:
             value: mongodbuser
           - name: MONGO_INITDB_ROOT_PASSWORD
             value: mongodbpwd
+      - name: mongodbexporter
+        image: fabricioveronez/mongo_exporter
+        resources: {}
+        ports:
+          - containerPort: 9216
+        env:
+          - name: MONGODB_URI
+            value: mongodb://mongodbuser:mongodbpwd@localhost:27017
+
   

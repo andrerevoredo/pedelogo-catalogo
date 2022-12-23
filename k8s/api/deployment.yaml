@@ -3,17 +3,22 @@ kind: Deployment
 metadata:
   name: api-deployment
 spec:
+  replicas: 4
   selector:
     matchLabels:
       app: api
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "80"
       labels:
         app: api
     spec:
       containers:
       - name: api
-        image: revoredo/api-produto:{{tag}}
+        image: revoredo/api-produto:latest
         resources:
           requests:
             memory: 32Mi
